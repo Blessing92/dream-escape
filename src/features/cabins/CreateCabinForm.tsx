@@ -11,6 +11,7 @@ import { useEditCabin } from "./useEditCabin"
 
 interface CreateCabinFormProps {
   cabinToEdit?: CabinType
+  onCloseModal?: () => void
 }
 
 interface CabinFormData {
@@ -22,7 +23,7 @@ interface CabinFormData {
   image: FileList | string
 }
 
-function CreateCabinForm({ cabinToEdit }: CreateCabinFormProps) {
+function CreateCabinForm({ cabinToEdit, onCloseModal }: CreateCabinFormProps) {
   const { id: editId, ...editValues } = cabinToEdit || {}
   const isEditSession = Boolean(editId)
 
@@ -45,14 +46,24 @@ function CreateCabinForm({ cabinToEdit }: CreateCabinFormProps) {
       editACabin(
         { ...data, id: editId, image: imageFileOrString },
         {
-          onSuccess: () => reset(),
+          onSuccess: () => {
+            reset()
+            if (onCloseModal) {
+              onCloseModal()
+            }
+          },
         },
       )
     } else {
       createACabin(
         { ...data, image: data.image[0] },
         {
-          onSuccess: () => reset(),
+          onSuccess: () => {
+            reset()
+            if (onCloseModal) {
+              onCloseModal()
+            }
+          },
         },
       )
     }
@@ -61,7 +72,10 @@ function CreateCabinForm({ cabinToEdit }: CreateCabinFormProps) {
   function onError(newErrors: any) {}
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)}>
+    <Form
+      onSubmit={handleSubmit(onSubmit, onError)}
+      type={onCloseModal ? "modal" : "regular"}
+    >
       <FormRow label="Cabin name" error={errors?.name?.message}>
         <Input
           type="text"
@@ -142,7 +156,12 @@ function CreateCabinForm({ cabinToEdit }: CreateCabinFormProps) {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset" size="medium">
+        <Button
+          variation="secondary"
+          type="reset"
+          size="medium"
+          onClick={() => onCloseModal?.()}
+        >
           Cancel
         </Button>
         <Button variation="primary" size="medium" disabled={isWorking}>

@@ -1,19 +1,19 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { toast } from "react-toastify"
-import { createCabin } from "../../services/apiCabins"
+import { updateSettingApi } from "../../services/apiSettings"
 
-export const useCreateCabin = () => {
+export const useUpdateSettings = () => {
   const queryClient = useQueryClient()
 
-  const { mutate: createACabin, isPending: isCreating } = useMutation({
-    mutationFn: createCabin,
+  const { mutate: updateSetting, isPending: isUpdating } = useMutation({
+    mutationFn: updateSettingApi,
     onSuccess: () => {
       queryClient
         .invalidateQueries({
-          queryKey: ["cabins"],
+          queryKey: ["settings"],
         })
         .then(() => {
-          toast.success("New cabin created successfully.", { autoClose: 2000 })
+          toast.success("Setting edited successfully.", { autoClose: 2000 })
         })
     },
     onError: (err) => {
@@ -21,5 +21,5 @@ export const useCreateCabin = () => {
     },
   })
 
-  return { createACabin, isCreating }
+  return { updateSetting, isUpdating }
 }

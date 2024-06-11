@@ -1,5 +1,5 @@
 import supabase, { supabaseUrl } from "./supabase"
-import { CabinType } from "../types"
+import { CabinCreationType, CabinType } from "../types"
 
 export const getCabins = async () => {
   const { data, error } = await supabase.from("cabins").select("*")
@@ -24,23 +24,26 @@ export const deleteCabinApi = async (cabinId: number) => {
   return data
 }
 
-export const createCabin = async (cabin: CabinType) => {
+export const createCabin = async (cabin: CabinCreationType) => {
   let imagePath = cabin.image
+  let imageName = cabin.image as string
 
   if (cabin.image instanceof File) {
-    const imageName = `${Math.random()}-${cabin.image.name}`.replaceAll("/", "")
+    imageName = `${Math.random()}-${cabin.image.name}`.replaceAll("/", "")
     imagePath = `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`
+  }
 
-    const { data, error } = await supabase
-      .from("cabins")
-      .insert([{ ...cabin, image: imagePath }])
-      .select()
-      .single()
+  const { data, error } = await supabase
+    .from("cabins")
+    .insert([{ ...cabin, image: imagePath }])
+    .select()
+    .single()
 
-    if (error) {
-      throw new Error(`Cabin could not be created`)
-    }
+  if (error) {
+    throw new Error(`Cabin could not be created`)
+  }
 
+  if (cabin.image instanceof File) {
     const { error: storageError } = await supabase.storage
       .from("cabin-images")
       .upload(imageName, cabin.image)
@@ -51,10 +54,9 @@ export const createCabin = async (cabin: CabinType) => {
         `Cabin image could not be uploaded and cabin image was not created`,
       )
     }
-
-    return data
   }
-  return {}
+
+  return data
 }
 
 export const editCabin = async (cabin: CabinType) => {
