@@ -1,7 +1,9 @@
 import styled from "styled-components"
+import React, { ReactElement, createContext, useContext } from "react"
+import { CabinType } from "../types"
 
 type CommonRowProps = {
-  columns: number
+  columns: string
 }
 
 const StyledTable = styled.div`
@@ -62,3 +64,59 @@ const Empty = styled.p`
   text-align: center;
   margin: 2.4rem;
 `
+
+interface TableProps {
+  children: React.ReactNode
+  columns: string
+}
+
+type TableContextType = {
+  columns: string
+}
+
+const TableContext = createContext<TableContextType | null>(null)
+
+function Table({ columns, children }: TableProps) {
+  return (
+    <TableContext.Provider value={{ columns }}>
+      <StyledTable role="table">{children}</StyledTable>
+    </TableContext.Provider>
+  )
+}
+
+function Header({ children }: { children: React.ReactNode }) {
+  const { columns } = useContext(TableContext) as TableContextType
+
+  return (
+    <StyledHeader role="row" columns={columns} as="header">
+      {children}
+    </StyledHeader>
+  )
+}
+
+function Row({ children }: { children: React.ReactNode }) {
+  const { columns } = useContext(TableContext) as TableContextType
+
+  return (
+    <StyledRow role="row" columns={columns}>
+      {children}
+    </StyledRow>
+  )
+}
+
+interface BodyProps {
+  data: CabinType[] | undefined
+  render: (data: any) => ReactElement
+}
+
+function Body({ data, render }: BodyProps) {
+  if (!data?.length) return <Empty>No Cabins to show at the moment</Empty>
+  return <StyledBody>{data.map(render)}</StyledBody>
+}
+
+Table.Header = Header
+Table.Body = Body
+Table.Row = Row
+Table.Footer = Footer
+
+export default Table

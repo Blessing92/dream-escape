@@ -4,9 +4,7 @@ import React, {
   createContext,
   ReactElement,
   useContext,
-  useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react"
 import { HiXMark } from "react-icons/hi2"
