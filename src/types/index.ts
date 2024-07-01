@@ -33,3 +33,25 @@ export interface SettingsUpdate {
   maxGuestsPerBooking: number
   breakfastPrice: number
 }
+
+export interface Guest {
+  id: string
+  created_at: string
+  fullName: string
+  email: string
+}
+
+export type Status = "unconfirmed" | "checked-in" | "checked-out"
+
+export interface Booking {
+  id: string
+  created_at: string
+  startDate: string
+  endDate: string
+  numNights: string
+  numGuests: number
+  totalPrice: number
+  status: Status
+  guests: Guest
+  cabins: CabinType
+}

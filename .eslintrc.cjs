@@ -74,7 +74,8 @@ module.exports = {
         ignorePropertyModificationsFor: ["state"],
         ignorePropertyModificationsForRegex: ["^draft"],
       }
-    ]
+    ],
+    "react/jsx-no-bind": "off",
   },
   overrides: [
     {

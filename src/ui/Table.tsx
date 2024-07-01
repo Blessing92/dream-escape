@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import React, { ReactElement, createContext, useContext } from "react"
-import { CabinType } from "../types"
+import { Booking, CabinType } from "../types"
 
 type CommonRowProps = {
   columns: string
@@ -105,7 +105,7 @@ function Row({ children }: { children: React.ReactNode }) {
 }
 
 interface BodyProps {
-  data: CabinType[] | undefined
+  data: CabinType[] | Booking[]
   render: (data: any) => ReactElement
 }
 

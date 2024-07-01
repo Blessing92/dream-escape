@@ -1,6 +1,6 @@
-import SortBy from "../../ui/SortBy";
-import Filter from "../../ui/Filter";
-import TableOperations from "../../ui/TableOperations";
+import SortBy from "../../ui/SortBy"
+import Filter from "../../ui/Filter.js"
+import TableOperations from "../../ui/TableOperations.js"
 
 function BookingTableOperations() {
   return (
@@ -27,7 +27,7 @@ function BookingTableOperations() {
         ]}
       />
     </TableOperations>
-  );
+  )
 }
 
-export default BookingTableOperations;
+export default BookingTableOperations
