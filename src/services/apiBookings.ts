@@ -1,16 +1,63 @@
 // import { getToday } from "../utils/helpers"
 import supabase from "./supabase"
+import { Booking } from "../types"
+import { PAGE_SIZE } from "../utils/constants"
 
-export const getBookings = async () => {
-  const { data, error } = await supabase
+interface GetBookingsProp {
+  filter: { field: string; value: string; method?: FilterMethod } | null
+  sortBy: { field: string; direction: string }
+  page: number
+}
+
+interface GetBookingsResponse {
+  data: Booking[]
+  count: number | null
+}
+
+type FilterMethod =
+  | "eq"
+  | "neq"
+  | "gt"
+  | "gte"
+  | "lt"
+  | "lte"
+  | "like"
+  | "ilike"
+
+export const getBookings = async (
+  props: GetBookingsProp,
+): Promise<GetBookingsResponse> => {
+  let query = supabase
     .from("bookings")
-    .select("*, cabins(name), guests(fullName, email)")
+    .select("*, cabins(name), guests(fullName, email)", { count: "exact" })
+
+  if (props.filter) {
+    const method = props.filter.method || "eq"
+    query = (query[method] as (field: string, value: string) => typeof query)(
+      props.filter.field,
+      props.filter.value,
+    )
+  }
+
+  if (props.sortBy) {
+    query = query.order(props.sortBy.field, {
+      ascending: props.sortBy.direction === "asc",
+    })
+  }
+
+  if (props.page) {
+    const from = (props.page - 1) * (PAGE_SIZE - 1)
+    const to = from + PAGE_SIZE - 1
+    query = query.range(from, to)
+  }
+
+  const { data, error, count } = await query
 
   if (error) {
     throw new Error(`Unable to get bookings ${error}`)
   }
 
-  return data
+  return { data: data as Booking[], count }
 }
 
 // export async function getBooking(id) {
