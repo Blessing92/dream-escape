@@ -19,6 +19,8 @@ export interface CabinCreationType {
 }
 
 export interface Settings {
+  id: string
+  created_at: string
   minBookingLength: number
   maxBookingLength: number
   maxGuestsPerBooking: number
@@ -39,6 +41,9 @@ export interface Guest {
   created_at: string
   fullName: string
   email: string
+  nationality: string
+  countryFlag: string
+  nationalID: string
 }
 
 export type Status = "unconfirmed" | "checked-in" | "checked-out"
@@ -50,8 +55,13 @@ export interface Booking {
   endDate: string
   numNights: string
   numGuests: number
+  cabinPrice: number
+  extrasPrice: number
   totalPrice: number
   status: Status
   guests: Guest
   cabins: CabinType
+  hasBreakfast: boolean
+  observations: string
+  isPaid: boolean
 }

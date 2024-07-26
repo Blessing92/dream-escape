@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import BookingDataBox from "../bookings/BookingDataBox"
+import BookingDataBox from "../bookings/BookingDataBox.js"
 
 import Row from "../../ui/Row"
 import Heading from "../../ui/Heading"

@@ -10,7 +10,8 @@ import {
 import DataItem from "../../ui/DataItem"
 import { Flag } from "../../ui/Flag"
 
-import { formatDistanceFromNow, formatCurrency } from "../../utils/helpers.js"
+import { formatDistanceFromNow, formatCurrency } from "../../utils/helpers"
+import { Booking } from "../../types"
 
 const StyledBookingDataBox = styled.section`
   /* Box */
@@ -68,7 +69,11 @@ const Guest = styled.div`
   }
 `
 
-const Price = styled.div`
+interface PriceProps {
+  isPaid?: boolean
+}
+
+const Price = styled.div<PriceProps>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -101,9 +106,13 @@ const Footer = styled.footer`
   text-align: right;
 `
 
-// A purely presentational component
-function BookingDataBox({ booking }) {
+interface BookingDataBoxProps {
+  booking: Booking
+}
+
+function BookingDataBox({ booking }: BookingDataBoxProps) {
   const {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     created_at,
     startDate,
     endDate,
@@ -115,7 +124,13 @@ function BookingDataBox({ booking }) {
     hasBreakfast,
     observations,
     isPaid,
-    guests: { fullName: guestName, email, country, countryFlag, nationalID },
+    guests: {
+      fullName: guestName,
+      email,
+      nationality,
+      countryFlag,
+      nationalID,
+    },
     cabins: { name: cabinName },
   } = booking
 
@@ -140,7 +155,9 @@ function BookingDataBox({ booking }) {
 
       <Section>
         <Guest>
-          {countryFlag && <Flag src={countryFlag} alt={`Flag of ${country}`} />}
+          {countryFlag && (
+            <Flag src={countryFlag} alt={`Flag of ${nationality}`} />
+          )}
           <p>
             {guestName} {numGuests > 1 ? `+ ${numGuests - 1} guests` : ""}
           </p>
