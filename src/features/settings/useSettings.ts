@@ -3,7 +3,7 @@ import { getSettings } from "../../services/apiSettings"
 
 export const useSettings = () => {
   const {
-    isLoading,
+    isPending,
     error,
     data: settings,
   } = useQuery({
@@ -11,5 +11,5 @@ export const useSettings = () => {
     queryFn: getSettings,
   })
 
-  return { isLoading, error, settings }
+  return { isPending, error, settings }
 }

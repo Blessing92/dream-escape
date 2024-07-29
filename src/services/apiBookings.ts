@@ -129,20 +129,25 @@ export async function getBooking(id: string) {
 //   return data
 // }
 
-// export async function updateBooking(id, obj) {
-//   const { data, error } = await supabase
-//     .from("bookings")
-//     .update(obj)
-//     .eq("id", id)
-//     .select()
-//     .single()
-//
-//   if (error) {
-//     console.error(error)
-//     throw new Error("Booking could not be updated")
-//   }
-//   return data
-// }
+type UpdateBookingFields = Partial<Omit<Booking, "id">>
+
+export async function updateBooking(id: string, obj: UpdateBookingFields) {
+  if (!id) {
+    throw new Error("Booking ID is required")
+  }
+  const { data, error } = await supabase
+    .from("bookings")
+    .update(obj)
+    .eq("id", id)
+    .select()
+    .single()
+
+  if (error) {
+    console.error(error)
+    throw new Error("Booking could not be updated")
+  }
+  return data as Booking
+}
 
 // export async function deleteBooking(id) {
 //   // REMEMBER RLS POLICIES

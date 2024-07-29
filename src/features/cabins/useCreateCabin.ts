@@ -17,7 +17,7 @@ export const useCreateCabin = () => {
         })
     },
     onError: (err) => {
-      toast.error(err.message, { autoClose: 5000 })
+      toast.error(err.message, { autoClose: 2000 })
     },
   })
 

@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import React from "react"
+import styled from "styled-components"
 
 const StyledCheckbox = styled.div`
   display: flex;
@@ -23,9 +24,23 @@ const StyledCheckbox = styled.div`
     align-items: center;
     gap: 0.8rem;
   }
-`;
+`
 
-function Checkbox({ checked, onChange, disabled = false, id, children }) {
+interface CheckboxProps {
+  checked: boolean
+  onChange: () => void
+  disabled?: boolean
+  id: string
+  children: React.ReactNode
+}
+
+function Checkbox({
+  checked,
+  onChange,
+  disabled = false,
+  id,
+  children,
+}: CheckboxProps) {
   return (
     <StyledCheckbox>
       <input
@@ -37,7 +52,7 @@ function Checkbox({ checked, onChange, disabled = false, id, children }) {
       />
       <label htmlFor={!disabled ? id : ""}>{children}</label>
     </StyledCheckbox>
-  );
+  )
 }
 
-export default Checkbox;
+export default Checkbox

@@ -3,6 +3,7 @@ import { format, isToday } from "date-fns"
 
 import { HiEye } from "react-icons/hi"
 import { useNavigate } from "react-router-dom"
+import { HiArrowDownOnSquare } from "react-icons/hi2"
 import Tag from "../../ui/Tag"
 import Table from "../../ui/Table"
 
@@ -83,6 +84,15 @@ function BookingRow({ booking }: { booking: Booking }) {
           >
             See details
           </Menus.Button>
+
+          {booking.status === "unconfirmed" && (
+            <Menus.Button
+              icon={<HiArrowDownOnSquare />}
+              onClick={() => navigate(`/checkin/${booking.id}`)}
+            >
+              Check in
+            </Menus.Button>
+          )}
         </Menus.List>
       </Menus.Menu>
     </Table.Row>
