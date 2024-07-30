@@ -131,7 +131,7 @@ export async function getBooking(id: string) {
 
 type UpdateBookingFields = Partial<Omit<Booking, "id">>
 
-export async function updateBooking(id: string, obj: UpdateBookingFields) {
+export async function updateBooking(id: string, obj?: UpdateBookingFields) {
   if (!id) {
     throw new Error("Booking ID is required")
   }
@@ -149,13 +149,16 @@ export async function updateBooking(id: string, obj: UpdateBookingFields) {
   return data as Booking
 }
 
-// export async function deleteBooking(id) {
-//   // REMEMBER RLS POLICIES
-//   const { data, error } = await supabase.from("bookings").delete().eq("id", id)
-//
-//   if (error) {
-//     console.error(error)
-//     throw new Error("Booking could not be deleted")
-//   }
-//   return data
-// }
+export async function deleteBookingApi(bookingId: string) {
+  // REMEMBER RLS POLICIES
+  const { data, error } = await supabase
+    .from("bookings")
+    .delete()
+    .eq("id", bookingId)
+
+  if (error) {
+    console.error(error)
+    throw new Error("Booking could not be deleted")
+  }
+  return data
+}
