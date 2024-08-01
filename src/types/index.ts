@@ -66,7 +66,13 @@ export interface Booking {
   isPaid: boolean
 }
 
+export interface SignInProps {
+  email: string
+  password: string
+}
+
 export interface SignupProps {
+  fullName: string
   email: string
   password: string
 }

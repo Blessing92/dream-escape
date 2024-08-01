@@ -12,7 +12,7 @@ const StyledFilter = styled.div`
 `
 
 interface FilterButtonProps {
-  active?: boolean
+  $active?: boolean
 }
 
 const FilterButton = styled.button<FilterButtonProps>`
@@ -20,7 +20,7 @@ const FilterButton = styled.button<FilterButtonProps>`
   border: none;
 
   ${(props) =>
-    props.active &&
+    props.$active &&
     css`
       background-color: var(--color-brand-600);
       color: var(--color-brand-50);
@@ -65,7 +65,7 @@ function Filter({ filterField, options }: FilterProps) {
       {options.map((option) => (
         <FilterButton
           key={option.value}
-          active={currentFilter === option.value}
+          $active={currentFilter === option.value}
           disabled={currentFilter === option.value}
           onClick={() => handleClick(option.value)}
         >

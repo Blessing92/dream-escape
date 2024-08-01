@@ -3,7 +3,7 @@ import React, { ReactElement, createContext, useContext } from "react"
 import { Booking, CabinType } from "../types"
 
 type CommonRowProps = {
-  columns: string
+  $columns: string
 }
 
 const StyledTable = styled.div`
@@ -17,7 +17,7 @@ const StyledTable = styled.div`
 
 const CommonRow = styled.div<CommonRowProps>`
   display: grid;
-  grid-template-columns: ${(props) => props.columns};
+  grid-template-columns: ${(props) => props.$columns};
   column-gap: 2.4rem;
   align-items: center;
   transition: none;
@@ -88,7 +88,7 @@ function Header({ children }: { children: React.ReactNode }) {
   const { columns } = useContext(TableContext) as TableContextType
 
   return (
-    <StyledHeader role="row" columns={columns} as="header">
+    <StyledHeader role="row" $columns={columns} as="header">
       {children}
     </StyledHeader>
   )
@@ -98,7 +98,7 @@ function Row({ children }: { children: React.ReactNode }) {
   const { columns } = useContext(TableContext) as TableContextType
 
   return (
-    <StyledRow role="row" columns={columns}>
+    <StyledRow role="row" $columns={columns}>
       {children}
     </StyledRow>
   )

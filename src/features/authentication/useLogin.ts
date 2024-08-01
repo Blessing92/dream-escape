@@ -12,8 +12,8 @@ export function useLogin() {
     mutationFn: ({ email, password }: SignupProps) =>
       loginApi({ email, password }),
     onSuccess: (user) => {
-      queryClient.setQueryData(["user"], user)
-      navigate("/dashboard")
+      queryClient.setQueryData(["user"], user.user)
+      navigate("/dashboard", { replace: true })
     },
     onError: (error) => {
       console.log("Error logging in", error)
