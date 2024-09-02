@@ -34,6 +34,10 @@ function SignupForm() {
     )
   }
 
+  function handleCancel() {
+    reset()
+  }
+
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <FormRow label="Full name" error={errors?.fullName?.message}>
@@ -98,6 +102,7 @@ function SignupForm() {
           variation="secondary"
           type="reset"
           disabled={isPending}
+          onClick={handleCancel}
         >
           Cancel
         </Button>

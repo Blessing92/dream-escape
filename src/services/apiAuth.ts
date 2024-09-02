@@ -1,4 +1,5 @@
-import supabase from "./supabase"
+import { UserAttributes } from "@supabase/supabase-js"
+import supabase, { supabaseUrl } from "./supabase"
 import { SignupProps, SignInProps } from "../types"
 
 export async function signup({ fullName, email, password }: SignupProps) {
@@ -37,4 +38,50 @@ export async function getCurrentUser() {
 export async function logout() {
   const { error } = await supabase.auth.signOut()
   if (error) throw new Error(error.message)
+}
+
+interface UpdateUserDataProps {
+  password?: string
+  fullName?: string
+  avatar?: File | null
+}
+
+export async function updateCurrentUser({
+  password,
+  fullName,
+  avatar,
+}: UpdateUserDataProps) {
+  // 1. Update password OR fullName
+  let updateData: UserAttributes = {}
+
+  if (password) {
+    updateData = { password }
+  }
+  if (fullName) {
+    updateData = { data: { fullName } }
+  }
+
+  const { data, error } = await supabase.auth.updateUser(updateData)
+
+  if (error) throw new Error(error.message)
+  if (!avatar) return data
+
+  // 2. Upload the avatar image
+  const fileName = `avatar-${data.user?.id}-${Math.random()}`
+  const { error: storageError } = await supabase.storage
+    .from("avatars")
+    .upload(fileName, avatar)
+
+  if (storageError) throw new Error(storageError.message)
+
+  // 3. Update avatar in the user
+  const { data: updatedUser, error: avatarError } =
+    await supabase.auth.updateUser({
+      data: {
+        avatar: `${supabaseUrl}/storage/v1/object/public/avatars/${fileName}`,
+      },
+    })
+
+  if (avatarError) throw new Error(avatarError.message)
+  return updatedUser
 }
