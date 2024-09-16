@@ -7,16 +7,11 @@ export const useUpdateUser = () => {
 
   const { mutate: updateUser, isPending: isUpdating } = useMutation({
     mutationFn: updateCurrentUser,
-    onSuccess: () => {
-      queryClient
-        .invalidateQueries({
-          queryKey: ["users"],
-        })
-        .then(() => {
-          toast.success("User account updated successfully.", {
-            autoClose: 3000,
-          })
-        })
+    onSuccess: ({ user }) => {
+      queryClient.setQueryData(["user"], user)
+      toast.success("User account updated successfully.", {
+        autoClose: 2000,
+      })
     },
     onError: (err) => {
       toast.error(err.message, { autoClose: 5000 })

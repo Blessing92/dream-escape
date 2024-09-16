@@ -7,7 +7,7 @@ import { useUpdateSettings } from "./useUpdateSettings"
 
 function UpdateSettingsForm() {
   const {
-    isLoading,
+    isPending,
     settings: {
       minBookingLength,
       maxBookingLength,
@@ -18,7 +18,7 @@ function UpdateSettingsForm() {
 
   const { isUpdating, updateSetting } = useUpdateSettings()
 
-  if (isLoading) return <Spinner />
+  if (isPending) return <Spinner />
 
   function handleUpdate(e: any, field: string) {
     const { value } = e.target
