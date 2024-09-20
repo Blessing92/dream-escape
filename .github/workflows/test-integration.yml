@@ -7,21 +7,20 @@ on:
   pull_request:
     branches:
       - main
+env:
+  DEPLOYMENT_CHANNEL: "live"
+  PUBLIC_CLIENT_VARIABLES: ${{ vars.PUBLIC_CLIENT_VARIABLES }}
+
 
 jobs:
-  test:
+  run-front-test:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [16.x]
-
+    environment: Production
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
-
-      - run: npm install
-      - run: npm run test
+          node-version: 20
+      - run: |
+          npm ci
+          npm test
