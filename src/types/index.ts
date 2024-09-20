@@ -53,7 +53,7 @@ export interface Booking {
   created_at: string
   startDate: string
   endDate: string
-  numNights: string
+  numNights: number
   numGuests: number
   cabinPrice: number
   extrasPrice: number

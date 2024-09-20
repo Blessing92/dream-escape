@@ -1,4 +1,10 @@
-import React, { createContext, useState, useContext, MouseEvent } from "react"
+import React, {
+  createContext,
+  useState,
+  useContext,
+  MouseEvent,
+  useMemo,
+} from "react"
 import styled from "styled-components"
 import { HiEllipsisVertical } from "react-icons/hi2"
 import { createPortal } from "react-dom"
@@ -91,15 +97,14 @@ function Menus({ children }: MenuProps) {
   const [position, setPosition] = useState({ x: 0, y: 0 })
 
   const close = () => setOpenId("")
-  const open = setOpenId
+  const open = (id: string) => setOpenId(id)
 
-  return (
-    <MenusContext.Provider
-      value={{ openId, close, open, position, setPosition }}
-    >
-      {children}
-    </MenusContext.Provider>
+  const value = useMemo(
+    () => ({ openId, close, open, position, setPosition }),
+    [openId, position],
   )
+
+  return <MenusContext.Provider value={value}>{children}</MenusContext.Provider>
 }
 
 function Toggle({ id }: { id: string }) {
@@ -108,6 +113,7 @@ function Toggle({ id }: { id: string }) {
   ) as MenuContextType
 
   function handleClick(e: MouseEvent) {
+    e.stopPropagation()
     const rect = (e.target as HTMLElement)
       .closest("button")
       ?.getBoundingClientRect()
@@ -121,7 +127,6 @@ function Toggle({ id }: { id: string }) {
   }
 
   return (
-    // eslint-disable-next-line react/jsx-no-bind
     <StyledToggle onClick={handleClick}>
       <HiEllipsisVertical />
     </StyledToggle>
@@ -137,7 +142,7 @@ function List({ id, children }: ListProps) {
   const { openId, position, close } = useContext(
     MenusContext,
   ) as MenuContextType
-  const ref = useOutsideClick({ handler: close })
+  const ref = useOutsideClick({ handler: close, listenCapturing: false })
 
   if (openId !== id) return null
 

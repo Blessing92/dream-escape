@@ -26,6 +26,12 @@ export default defineConfig(({ mode }) => {
         target: "es2022",
       },
     },
+    test: {
+      environment: "jsdom",
+      setupFiles: ["./src/setupTests.ts"],
+      testMatch: ["./tests/*.test.ts?(x)"],
+      globals: true,
+    },
     plugins: [react({ include: "**/*.{js,jsx,tsx}" })],
     define: {
       "process.env": `${JSON.stringify(env)}`,

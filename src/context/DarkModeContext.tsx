@@ -21,7 +21,11 @@ const DarkModeContext = createContext<DarkModeContextValue | undefined>(
 )
 
 function DarkModeProvider({ children }: DarkModeProviderProps) {
-  const [isDarkMode, setIsDarkMode] = useLocalStorageState(false, "isDarkMode")
+  const defaultMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+  const [isDarkMode, setIsDarkMode] = useLocalStorageState(
+    defaultMode,
+    "isDarkMode",
+  )
 
   useEffect(
     function applyDarkModeClass() {
