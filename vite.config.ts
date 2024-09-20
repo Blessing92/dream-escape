@@ -9,10 +9,23 @@ export default defineConfig(({ mode }) => {
 
   return {
     build: {
-      // Relative to the root
       outDir: "./build",
-      sourcemap: true, // Source map generation must be turned on
+      sourcemap: true,
       target: "es2022",
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes("node_modules")) {
+              return id
+                .toString()
+                .split("node_modules/")[1]
+                .split("/")[0]
+                .toString()
+            }
+            return null
+          },
+        },
+      },
     },
     esbuild: {
       target: "es2022",
