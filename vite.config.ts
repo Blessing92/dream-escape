@@ -13,10 +13,8 @@ export default defineConfig(({ mode }) => {
 
   const envWithProcessPrefix = {
     "process.env": `${JSON.stringify(env)}`,
+    __APP_ENV__: JSON.stringify(env.APP_ENV),
   }
-
-  const sentryActive =
-    !!env.VITE_APP_SENTRY_DSN && !!process.env.SENTRY_AUTH_TOKEN
 
   return {
     build: {
