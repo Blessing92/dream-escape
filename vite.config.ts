@@ -2,10 +2,7 @@ import react from "@vitejs/plugin-react"
 import { visualizer } from "rollup-plugin-visualizer"
 import { defineConfig, loadEnv } from "vite"
 
-// https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  // expose .env as process.env instead of process.env
-  // Reference: https://github.com/vitejs/vite/issues/1149#issuecomment-857686209
   const env = loadEnv(mode, process.cwd(), "VITE_APP")
 
   // Optional: Populate NODE_ENV with the current mode (development/production)
