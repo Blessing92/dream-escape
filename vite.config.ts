@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => {
   return {
     build: {
       // Relative to the root
-      outDir: "./build",
+      outDir: "./dist",
       sourcemap: true, // Source map generation must be turned on
       target: "es2022",
       rollupOptions: {
